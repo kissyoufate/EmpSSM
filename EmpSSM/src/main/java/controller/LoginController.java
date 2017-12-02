@@ -28,17 +28,17 @@ public class LoginController {
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         Model model,
-                        HttpServletResponse httpServletResponse){
+                        HttpServletResponse httpServletResponse) {
         User user = loginService.loginByUsernameAndPassword(username, password);
         System.out.println(user);
-        if (user == null){
-            model.addAttribute("info","用户名或密码不存在!");
+        if (user == null) {
+            model.addAttribute("info", "用户名或密码错误!");
             return "login";
         }
-        model.addAttribute("user",user);
+        model.addAttribute("user", user);
 
         //保存登录状态
-        Cookie cookie = new Cookie("loginUser",user.getUsername());
+        Cookie cookie = new Cookie("loginUser", user.getUsername());
         cookie.setMaxAge(3600);
         httpServletResponse.addCookie(cookie);
 

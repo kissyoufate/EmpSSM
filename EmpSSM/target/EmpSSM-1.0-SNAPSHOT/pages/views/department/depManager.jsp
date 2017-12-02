@@ -12,13 +12,6 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%--<script>--%>
-    <%--var successMessage = '${addSuccess}';--%>
-    <%--if (successMessage.length > 0){--%>
-        <%--alert(successMessage);--%>
-    <%--}--%>
-<%--</script>--%>
-
 <html>
 <head>
     <base href="<%=basePath%>">
@@ -37,13 +30,13 @@
 <div class="well" style="font-size: 20px">部门管理</div>
 <!--部门管理头,包含搜索部门 添加部门-->
 <div class="emp_serch">
-    <form action="queryDep" class="form-inline" method="get">
+    <form action="/department/index" class="form-inline" method="get">
         <input type="text" placeholder="请输入部门名称" class="form-control" name="name" value="${name}">
         <input type="submit" value="搜索" class="btn btn-success">
         <a href="depAdd" class="btn btn-info">添加部门</a>
     </form>
 </div>
-<div class="well alert-info" style="margin-top: 20px">部门信息一览 <span>总共有${depCount}个数据</span></div>
+<div class="well alert-info" style="margin-top: 20px">部门信息一览 <span>总共有${count}个数据</span></div>
 <!--部门信息表-->
 <div class="container">
     <table class="table table-hover table-bordered">
@@ -53,14 +46,15 @@
             <th>部门描述</th>
             <th>操作</th>
         </tr>
-        <c:forEach items="${list}" var="l">
+        <c:forEach items="${lists}" var="l">
             <tr>
                 <td>${l.id}</td>
                 <td>${l.dep_name}</td>
                 <td>${l.dep_des}</td>
                 <td>
                     <a href="depUpdate?id=${l.id}" class="btn btn-sm">编辑</a>
-                    <a href="javascript: void (0)" class="btn btn-sm" onclick="deleDepById(${l.id})">删除</a>
+                    <a href="javascript: void (0)" class="btn btn-sm"
+                       onclick="deleDepById(${l.id},${page},'${l.dep_name}')">删除</a>
                 </td>
             </tr>
         </c:forEach>
@@ -76,37 +70,38 @@
 <script>
     //分页
     $('#pagination').jqPaginator({
-        totalPages: ${totalPages},
+        totalPages: ${pages},
         visiblePages: 5,
-        currentPage: ${currentPage},
+        currentPage: ${page},
 
-        first: '<li class="first"><a href="queryDep?name=${name}&page=1">首页</a></li>',
-        prev: '<li class="prev"><a href="queryDep?name=${name}&page=${currentPage-1==0?1:currentPage-1}">上一页</a></li>',
-        next: '<li class="next"><a href="queryDep?name=${name}&page=${currentPage==totalPages?currentPage:currentPage+1}">下一页</a></li>',
-        last: '<li class="last"><a href="queryDep?name=${name}&page={{totalPages}}">尾页</a></li>',
-        page: '<li class="page"><a href="queryDep?name=${name}&page={{page}}">{{page}}</a></li>',
+        first: '<li class="first"><a href="/department/index?name=${name}&page=1">首页</a></li>',
+        prev: '<li class="prev"><a href="/department/index?name=${name}&page=${page-1==0?1:page-1}">上一页</a></li>',
+        next: '<li class="next"><a href="/department/index?name=${name}&page=${page==page?page:page+1}">下一页</a></li>',
+        last: '<li class="last"><a href="/department/index?name=${name}&page={{totalPages}}">尾页</a></li>',
+        page: '<li class="page"><a href="/department/index?name=${name}&page={{page}}">{{page}}</a></li>',
         onPageChange: function (num) {
 //            window.location.href = "empolyeeByPage?page=" +  num;
         }
     });
 
-    function deleDepById(id) {
-        var b = window.confirm("确定要删除这个部门么?");
+    function deleDepById(id, page, name) {
+        var b = window.confirm("确定要删除" + name + "么?");
         if (b) {
             $.post(
-                "deleDep",
+                "/department/delete",
                 {
-                    "id": id
+                    "id": id,
+                    "page": page,
+                    "name": name
                 },
                 function (result) {
-                    var JsonData = jQuery.parseJSON(result);
-                    if (JsonData.code == "success") {
-                        //删除成功
-                        alert("删除部门操作成功");
-                        window.location.href = "queryDep?page=1";
-                    } else {
-                        //删除失败
-                        alert(JsonData.message);
+                    var jsonResult = jQuery.parseJSON(result);
+                    if (jsonResult.status == 'success'){
+                        alert('删除成功');
+                        window.location.href = "/department/index?name=${name}&page=" + jsonResult.data;
+                    }else {
+                        alert('删除失败');
+                        window.location.href = "/department/index?name=${name}&page=${page}";
                     }
                 }
             )
