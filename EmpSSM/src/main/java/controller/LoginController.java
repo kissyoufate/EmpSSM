@@ -1,5 +1,7 @@
 package controller;
 
+import model.User;
+import org.junit.Test;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,32 +9,39 @@ import org.springframework.web.bind.annotation.RequestParam;
 import service.LoginService;
 
 import javax.annotation.Resource;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * create by Gary Wong
- * 2017/11/12
+ * 2017/12/2
  * class describetion : 登录控制器
  */
 @Controller
-@RequestMapping(value = "/user")
+@RequestMapping("/user")
 public class LoginController {
-
     @Resource
     private LoginService loginService;
 
-    @RequestMapping(value = "/login")
-    public String doLogin(@RequestParam(value = "name") String name,
-                          @RequestParam(value = "password") String password,
-                          Model model,
-                          HttpServletRequest httpServletRequest){
-        System.out.println(loginService);
-        boolean b = loginService.doLoginService(name, password);
-        if (!b){
-            model.addAttribute("error","账号或密码错误!");
+    @RequestMapping("/login")
+    public String login(@RequestParam("username") String username,
+                        @RequestParam("password") String password,
+                        Model model,
+                        HttpServletResponse httpServletResponse){
+        User user = loginService.loginByUsernameAndPassword(username, password);
+        System.out.println(user);
+        if (user == null){
+            model.addAttribute("info","用户名或密码不存在!");
             return "login";
         }
-        httpServletRequest.getSession().setAttribute("loginsuccess","欢迎您" + name);
+        model.addAttribute("user",user);
+
+        //保存登录状态
+        Cookie cookie = new Cookie("loginUser",user.getUsername());
+        cookie.setMaxAge(3600);
+        httpServletResponse.addCookie(cookie);
+
         return "index";
     }
 }

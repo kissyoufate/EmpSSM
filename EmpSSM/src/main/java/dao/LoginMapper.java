@@ -4,15 +4,19 @@ import model.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 /**
  * create by Gary Wong
- * 2017/11/12
- * class describetion : 登录的数据库操作接口
+ * 2017/12/2
+ * class describetion : 用户的登录
  */
 @Service
 public interface LoginMapper {
-
-    public List<User> getUserByNameAndPassword(@Param("name") String name, @Param("password") String password);
+    /**
+     * 使用账号密码进行登录
+     * @param username 账号
+     * @param password 密码
+     * @return 管理员对象
+     */
+    public User loginByUsernameAndPassword(@Param("username") String username,
+                                           @Param("password") String password);
 }

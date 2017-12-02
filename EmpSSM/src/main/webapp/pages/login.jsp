@@ -1,6 +1,7 @@
+<%--suppress ALL --%>
 <%
-String path = request.getContextPath();
-String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
+    String path = request.getContextPath();
+    String basePath = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + path + "/";
 %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html lang="en">
@@ -17,7 +18,7 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
 <body>
 <div class="well" style="font-size: 20px">后台管理系统</div>
 <div class="login">
-    <form action="index.jsp">
+    <form action="/user/login" method="post">
         <div class="input-group">
             <label class="input-group-addon" for="accout">账号</label>
             <input type="text" placeholder="请输入账号" class="form-control" id="accout" name="username">
@@ -30,9 +31,18 @@ String basePath = request.getScheme() + "://" + request.getServerName() + ":" + 
         <br>
         <input type="submit" value="登录" class="btn btn-success" style="width: 300px">
     </form>
+    <p style="color: red">${info}</p>
 </div>
 </body>
 
 <script src="js/jquery-3.2.1.min.js"></script>
 <script src="js/bootstrap.min.js"></script>
 </html>
+
+<script>
+    window.onload = function () {
+        if ('${info}'.length > 0) {
+            alert('${info}');
+        }
+    }
+</script>

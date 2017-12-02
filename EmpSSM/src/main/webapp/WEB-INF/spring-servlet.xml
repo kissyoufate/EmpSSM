@@ -51,12 +51,12 @@
 
     <!-- mvc:view-controller可以在不需要Controller处理request的情况，转向到设置的View -->
     <!-- 像下面这样设置，如果请求为/，则不通过controller，而直接解析为/index.jsp -->
-    <mvc:view-controller path="/" view-name="view/index" />
+    <mvc:view-controller path="/" view-name="pages/index" />
 
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"></property>
         <!-- 配置jsp路径前缀 -->
-        <property name="prefix" value="/view/"></property>
+        <property name="prefix" value="/pages/"></property>
         <!-- 配置URl后缀 -->
         <property name="suffix" value=".jsp"></property>
     </bean>

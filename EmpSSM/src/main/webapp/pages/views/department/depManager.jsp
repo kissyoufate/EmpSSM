@@ -21,6 +21,7 @@
 
 <html>
 <head>
+    <base href="<%=basePath%>">
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
@@ -31,7 +32,6 @@
     <script src="pages/js/bootstrap.min.js"></script>
     <script src="pages/js/jqPaginator.js"></script>
     <title>部门管理</title>
-    <base href="<%=basePath%>">
 </head>
 <body>
 <div class="well" style="font-size: 20px">部门管理</div>

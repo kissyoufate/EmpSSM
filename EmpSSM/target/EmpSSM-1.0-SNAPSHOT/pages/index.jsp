@@ -110,13 +110,13 @@
                     </a>
                 </li>
                 <li>
-                    <a href="queryDep?page=1">
+                    <a href="/department/index">
                         <i class="icon-dollar"></i>
                         <span class="menu-text">部门管理</span>
                     </a>
                 </li>
                 <li>
-                    <a href="empolyeeByPage?page=1">
+                    <a href="/empolyee/index">
                         <i class="icon-dollar"></i>
                         <span class="menu-text">员工管理</span>
                     </a>
@@ -151,7 +151,7 @@
                         <i class="icon-home home-icon"></i>
                         <a href="#">首页</a>
                     </li>
-                    <li class="active">控制台 欢迎您 :${cookie.username.value}</li> <span><a href="loginOut" style="color: red;">退出登录</a></span>
+                    <li class="active">控制台 欢迎您 :${cookie.loginUser.value}</li> <span><a href="loginOut" style="color: red;">退出登录</a></span>
                 </ul><!-- .breadcrumb -->
 
                 <div class="nav-search" id="nav-search">
