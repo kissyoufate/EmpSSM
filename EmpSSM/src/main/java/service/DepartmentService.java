@@ -1,6 +1,7 @@
 package service;
 
 import dao.DepartmentMapper;
+import exception.BaseException;
 import model.Department;
 import org.springframework.stereotype.Service;
 
@@ -58,5 +59,26 @@ public class DepartmentService {
             return false;
         }
         return true;
+    }
+
+    /**
+     * 添加部门
+     * @param name 部门名字
+     * @param des  部门描述
+     * @return 增加的部门主键序号
+     */
+    public Integer addDepartmentByNameAndDes(String name,String des) throws BaseException {
+
+        if (name == null || name.trim().equals("")){
+            throw new BaseException("部门名字不能为空");
+        }
+
+        if (des == null || des.trim().equals("")){
+            throw new BaseException("部门描述不能为空");
+        }
+
+        Integer integer = departmentMapper.addDepartment(name, des);
+
+        return integer;
     }
 }

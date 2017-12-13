@@ -39,4 +39,13 @@ public interface DepartmentMapper {
      * @param id
      */
     public Integer deleteDepartment(Integer id);
+
+    /**
+     * 添加部门
+     * @param dep_name 部门名称
+     * @param dep_des  部门描述
+     * @return 部门主键序号
+     */
+    public Integer addDepartment(@Param(value = "dep_name") String dep_name,
+                                 @Param(value = "dep_des") String dep_des);
 }

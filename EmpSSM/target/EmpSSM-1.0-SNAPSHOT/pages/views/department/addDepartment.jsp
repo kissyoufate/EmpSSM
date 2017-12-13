@@ -27,7 +27,7 @@
 <body>
 <div class="well alert-info" style="font-size: 20px">添加部门</div>
 <div class="container">
-    <form action="depAdd" method="post">
+    <form action="/department/addDepHandle" method="post">
         <div class="row">
             <div class="col-sm-8">
                 <div class="form-group">
@@ -52,7 +52,7 @@
         </div>
     </form>
 
-    <p style="color: red">${info}</p>
+    <p style="color: red">${error}</p>
 </div>
 </body>
 </html>

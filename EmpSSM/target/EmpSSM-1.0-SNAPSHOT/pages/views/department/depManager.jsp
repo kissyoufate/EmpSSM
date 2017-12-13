@@ -33,7 +33,7 @@
     <form action="/department/index" class="form-inline" method="get">
         <input type="text" placeholder="请输入部门名称" class="form-control" name="name" value="${name}">
         <input type="submit" value="搜索" class="btn btn-success">
-        <a href="depAdd" class="btn btn-info">添加部门</a>
+        <a href="/department/addDep" class="btn btn-info">添加部门</a>
     </form>
 </div>
 <div class="well alert-info" style="margin-top: 20px">部门信息一览 <span>总共有${count}个数据</span></div>
@@ -76,7 +76,7 @@
 
         first: '<li class="first"><a href="/department/index?name=${name}&page=1">首页</a></li>',
         prev: '<li class="prev"><a href="/department/index?name=${name}&page=${page-1==0?1:page-1}">上一页</a></li>',
-        next: '<li class="next"><a href="/department/index?name=${name}&page=${page==page?page:page+1}">下一页</a></li>',
+        next: '<li class="next"><a href="/department/index?name=${name}&page=${page==pages?page:page+1}">下一页</a></li>',
         last: '<li class="last"><a href="/department/index?name=${name}&page={{totalPages}}">尾页</a></li>',
         page: '<li class="page"><a href="/department/index?name=${name}&page={{page}}">{{page}}</a></li>',
         onPageChange: function (num) {
@@ -96,10 +96,10 @@
                 },
                 function (result) {
                     var jsonResult = jQuery.parseJSON(result);
-                    if (jsonResult.status == 'success'){
+                    if (jsonResult.status == 'success') {
                         alert('删除成功');
                         window.location.href = "/department/index?name=${name}&page=" + jsonResult.data;
-                    }else {
+                    } else {
                         alert('删除失败');
                         window.location.href = "/department/index?name=${name}&page=${page}";
                     }

@@ -12,7 +12,7 @@ import javax.annotation.Resource;
 /**
  * create by Gary Wong
  * 2017/12/3
- * class describetion : none
+ * class describetion : spring 的测试环境搭建
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(value = {"classpath:applicationContext.xml"})

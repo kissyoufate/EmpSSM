@@ -1,6 +1,7 @@
 package controller;
 
 import com.alibaba.fastjson.JSON;
+import exception.BaseException;
 import model.Department;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,18 +32,15 @@ public class DepartmentConteoller {
      */
     public static final Integer limit = 5;
 
-    @RequestMapping("/index")
-    public String gotoDepIndex(@RequestParam(value = "page", required = false) Integer page,
-                               @RequestParam(value = "name", required = false) String name,
-                               Model model) {
-        if (page == null || page < 1) {
-            page = 1;
-        }
-
-        if (name == null) {
-            name = "";
-        }
-
+    /**
+     * 获取部门首页的数据并保存
+     * @param page 页码
+     * @param name 搜索的名字
+     * @param model 保存数据的容器
+     */
+    private void getDepData(@RequestParam(value = "page", required = false) Integer page,
+                            @RequestParam(value = "name", required = false) String name,
+                            Model model) {
         //当前页数的部门集合
         List<Department> lists = departmentService.getDepartmentByPage(page, limit, name);
         //总条数
@@ -67,6 +65,20 @@ public class DepartmentConteoller {
         model.addAttribute("limit", limit);
         model.addAttribute("page", page);
         model.addAttribute("lists", lists);
+    }
+
+    @RequestMapping("/index")
+    public String gotoDepIndex(@RequestParam(value = "page", required = false) Integer page,
+                               @RequestParam(value = "name", required = false) String name,
+                               Model model) {
+        if (page == null || page < 1) {
+            page = 1;
+        }
+
+        if (name == null) {
+            name = "";
+        }
+        getDepData(page, name, model);
         return "views/department/depManager";
     }
 
@@ -100,5 +112,47 @@ public class DepartmentConteoller {
         }
 
         return JSON.toJSONString(map);
+    }
+
+    /**
+     * 跳转到增加部门页面
+     * @return 员工页面所在位置
+     */
+    @RequestMapping("/addDep")
+    public String gotoAddDepPage(){
+        return "views/department/addDepartment";
+    }
+
+
+    /**
+     * 添加部门操作
+     * @param name 部门名字
+     * @param des  部门描述
+     * @return 返回的页面
+     */
+    @RequestMapping("/addDepHandle")
+    public String addDepHandle(@RequestParam(value = "dep_name") String name,
+                               @RequestParam(value = "dep_des") String des,
+                               Model model){
+
+        try {
+            Integer integer = departmentService.addDepartmentByNameAndDes(name, des);
+            if (integer > 0){
+                getDepData(1,"",model);
+                return "views/department/depManager";
+            }else {
+                model.addAttribute("dep_name",name);
+                model.addAttribute("dep_des",des);
+                model.addAttribute("error","添加部门失败!!");
+                return "views/department/addDepartment";
+            }
+
+        } catch (BaseException e) {
+            model.addAttribute("dep_name",name);
+            model.addAttribute("dep_des",des);
+            model.addAttribute("error",e.getMessage());
+            return "views/department/addDepartment";
+
+        }
     }
 }
