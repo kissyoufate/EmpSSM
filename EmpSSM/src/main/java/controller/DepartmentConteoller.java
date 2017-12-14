@@ -1,6 +1,8 @@
 package controller;
 
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import exception.BaseException;
 import model.Department;
 import org.springframework.stereotype.Controller;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import service.DepartmentService;
 
 import javax.annotation.Resource;
+import java.security.spec.ECParameterSpec;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -154,5 +157,25 @@ public class DepartmentConteoller {
             return "views/department/addDepartment";
 
         }
+    }
+
+    /**
+     * mybatis分页插件获取部门全部信息
+     * @param pg 当前页码
+     * @param model
+     * @return
+     */
+    @RequestMapping("/deps")
+    public String getAll(@RequestParam(value = "pg",defaultValue = "1") String pg,
+                         Model model){
+        //分页
+        PageHelper.startPage(Integer.parseInt(pg),limit);
+
+        List<Department> lists = departmentService.getAllDeps();
+        PageInfo<Department> pageInfo = new PageInfo<Department>(lists);
+
+        model.addAttribute("pageInfo",pageInfo);
+
+        return "views/department/depManager";
     }
 }

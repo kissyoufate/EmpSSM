@@ -110,7 +110,7 @@
                     </a>
                 </li>
                 <li>
-                    <a href="/department/index">
+                    <a href="/department/deps">
                         <i class="icon-dollar"></i>
                         <span class="menu-text">部门管理</span>
                     </a>

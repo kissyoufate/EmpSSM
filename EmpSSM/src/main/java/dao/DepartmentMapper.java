@@ -48,4 +48,10 @@ public interface DepartmentMapper {
      */
     public Integer addDepartment(@Param(value = "dep_name") String dep_name,
                                  @Param(value = "dep_des") String dep_des);
+
+    /**
+     * 获取全部部门信息 通过mybatis的分页插件进行分页
+     * @return 部门集合
+     */
+    public List<Department> getAllDeps();
 }

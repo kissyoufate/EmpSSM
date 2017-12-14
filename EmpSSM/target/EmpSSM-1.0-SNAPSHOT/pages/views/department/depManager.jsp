@@ -46,7 +46,7 @@
             <th>部门描述</th>
             <th>操作</th>
         </tr>
-        <c:forEach items="${lists}" var="l">
+        <c:forEach items="${pageInfo.list}" var="l">
             <tr>
                 <td>${l.id}</td>
                 <td>${l.dep_name}</td>
@@ -61,7 +61,32 @@
     </table>
 </div>
 <!-- 分页按钮 -->
-<ul class="pagination" id="pagination" style="width: 450px;display: block;position: relative;margin: 0 auto;"></ul>
+<%--<ul class="pagination" id="pagination" style="width: 450px;display: block;position: relative;margin: 0 auto;"></ul>--%>
+<div style="width: 400px; margin: 10px auto">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <c:if test="${pageInfo.pageNum-1 > 0}">
+                <li>
+                    <a href="/department/deps?pg=${pageInfo.pageNum-1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </c:if>
+
+            <c:forEach items="${pageInfo.navigatepageNums}" var="p">
+                <li><a href="/department/deps?pg=${p}">${p}</a></li>
+            </c:forEach>
+            
+            <c:if test="${pageInfo.pageNum + 1 <= pageInfo.pages}">
+                <li>
+                    <a href="/department/deps?pg=${pageInfo.pageNum+1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </c:if>
+        </ul>
+    </nav>
+</div>
 
 <p style="color: red">${updateInfo}</p>
 </body>
@@ -69,20 +94,20 @@
 
 <script>
     //分页
-    $('#pagination').jqPaginator({
-        totalPages: ${pages},
-        visiblePages: 5,
-        currentPage: ${page},
+    <%--$('#pagination').jqPaginator({--%>
+        <%--totalPages: ${pages},--%>
+        <%--visiblePages: 5,--%>
+        <%--currentPage: ${page},--%>
 
-        first: '<li class="first"><a href="/department/index?name=${name}&page=1">首页</a></li>',
-        prev: '<li class="prev"><a href="/department/index?name=${name}&page=${page-1==0?1:page-1}">上一页</a></li>',
-        next: '<li class="next"><a href="/department/index?name=${name}&page=${page==pages?page:page+1}">下一页</a></li>',
-        last: '<li class="last"><a href="/department/index?name=${name}&page={{totalPages}}">尾页</a></li>',
-        page: '<li class="page"><a href="/department/index?name=${name}&page={{page}}">{{page}}</a></li>',
-        onPageChange: function (num) {
-//            window.location.href = "empolyeeByPage?page=" +  num;
-        }
-    });
+        <%--first: '<li class="first"><a href="/department/index?name=${name}&page=1">首页</a></li>',--%>
+        <%--prev: '<li class="prev"><a href="/department/index?name=${name}&page=${page-1==0?1:page-1}">上一页</a></li>',--%>
+        <%--next: '<li class="next"><a href="/department/index?name=${name}&page=${page==pages?page:page+1}">下一页</a></li>',--%>
+        <%--last: '<li class="last"><a href="/department/index?name=${name}&page={{totalPages}}">尾页</a></li>',--%>
+        <%--page: '<li class="page"><a href="/department/index?name=${name}&page={{page}}">{{page}}</a></li>',--%>
+        <%--onPageChange: function (num) {--%>
+<%--//            window.location.href = "empolyeeByPage?page=" +  num;--%>
+        <%--}--%>
+    <%--});--%>
 
     function deleDepById(id, page, name) {
         var b = window.confirm("确定要删除" + name + "么?");

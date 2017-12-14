@@ -81,4 +81,12 @@ public class DepartmentService {
 
         return integer;
     }
+
+    /**
+     * 获取所有部门信息
+     * @return 部门信息集合
+     */
+    public List<Department> getAllDeps(){
+        return departmentMapper.getAllDeps();
+    }
 }

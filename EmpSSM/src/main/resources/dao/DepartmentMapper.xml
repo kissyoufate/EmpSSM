@@ -37,4 +37,9 @@
     <insert id="addDepartment" useGeneratedKeys="true">
         insert into tbl_department (dep_name,dep_des,dep_mark) values(#{dep_name},#{dep_des},1)
     </insert>
+
+    <!--public List<Department> getAllDeps();-->
+    <select id="getAllDeps" resultMap="department">
+        select *from tbl_department
+    </select>
 </mapper>
