@@ -54,4 +54,11 @@ public interface DepartmentMapper {
      * @return 部门集合
      */
     public List<Department> getAllDeps();
+
+    /**
+     * 通过名字搜索部门
+     * @param name 部门名字
+     * @return 部门列表集合
+     */
+    List<Department> searchDepsByName(@Param(value = "dep_name") String name);
 }

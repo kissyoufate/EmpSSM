@@ -89,4 +89,13 @@ public class DepartmentService {
     public List<Department> getAllDeps(){
         return departmentMapper.getAllDeps();
     }
+
+    /**
+     * 通过部门名字搜索部门
+     * @param name 部门名字
+     * @return 部门列表
+     */
+    public List<Department> searchDeps(String name) {
+        return departmentMapper.searchDepsByName(name);
+    }
 }

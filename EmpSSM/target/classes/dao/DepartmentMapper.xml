@@ -40,6 +40,11 @@
 
     <!--public List<Department> getAllDeps();-->
     <select id="getAllDeps" resultMap="department">
-        select *from tbl_department
+        select *from tbl_department where dep_mark = 1
+    </select>
+
+    <!--List<Department> searchDepsByName(@Param(value = "dep_name") String name);-->
+    <select id="searchDepsByName" resultMap="department">
+        select *from tbl_department where dep_mark = 1 and dep_name like concat(concat("%",#{dep_name}),"%")
     </select>
 </mapper>
