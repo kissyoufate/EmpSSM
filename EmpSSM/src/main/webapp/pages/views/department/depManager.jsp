@@ -31,7 +31,7 @@
 <!--部门管理头,包含搜索部门 添加部门-->
 <div class="emp_serch">
     <form action="/department/searchDeps" class="form-inline" method="get">
-        <input type="text" placeholder="请输入部门名称" class="form-control" name="name" value="${name}">
+        <input type="text" placeholder="请输入部门名称" class="form-control" name="name" value="${searchName}">
         <input type="submit" value="搜索" class="btn btn-success">
         <a href="javascript:void (0)" class="btn btn-info" data-toggle="modal" data-target="#myModal">添加部门</a>
     </form>
@@ -53,7 +53,8 @@
                 <td>${l.dep_name}</td>
                 <td>${l.dep_des}</td>
                 <td>
-                    <a href="depUpdate?id=${l.id}" class="btn btn-sm">编辑</a>
+                    <a href="javascript:void (0)" class="btn btn-sm"
+                       onclick="updateDep('${l.id}','${l.dep_name}','${l.dep_des}')">编辑</a>
                     <a href="javascript: void (0)" class="btn btn-sm"
                        onclick="deleDepById(${l.id},${pageInfo.pageNum},'${l.dep_name}')">删除</a>
                 </td>
@@ -67,17 +68,18 @@
     <nav aria-label="Page navigation">
         <ul class="pagination">
             <c:if test="${pageInfo.pageNum <= 1}">
-                <li class="disabled" ">
-                    <a href="/department/deps?pg=${pageInfo.pageNum-1}" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
+                <li class="disabled"
+                ">
+                <a href="/department/deps?pg=${pageInfo.pageNum-1}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
                 </li>
             </c:if>
             <c:if test="${pageInfo.pageNum > 1}">
                 <li class="disabled">
-                <a href="/department/deps?pg=${pageInfo.pageNum-1}" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
-                </a>
+                    <a href="/department/deps?pg=${pageInfo.pageNum-1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
                 </li>
             </c:if>
 
@@ -89,7 +91,7 @@
                     <li><a href="/department/deps?pg=${p}">${p}</a></li>
                 </c:if>
             </c:forEach>
-            
+
             <c:if test="${pageInfo.pageNum >= pageInfo.pages}">
                 <li class="disabled">
                     <a href="/department/deps?pg=${pageInfo.pageNum+1}" aria-label="Next">
@@ -108,7 +110,7 @@
     </nav>
 </div>
 
-<%--添加部门modal--%>
+<%--添加 部门modal--%>
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -134,28 +136,40 @@
     </div><!-- /.modal -->
 </div>
 
+<%--编辑部门--%>
+<div class="modal fade" id="myUpdateModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myUpdateModalLabel">添加部门</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="dep_name">部门名称</label>
+                    <input type="text" class="form-control" id="update_dep_name" placeholder="部门名称">
+                </div>
+                <div class="form-group">
+                    <label for="dep_des">部门描述</label>
+                    <input type="text" class="form-control" id="update_dep_des" placeholder="部门描述">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                <button type="button" class="btn btn-primary" id="updateDep">提交更改</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 <p style="color: red">${updateInfo}</p>
 </body>
 </html>
 
 <script>
-    //分页
-    <%--$('#pagination').jqPaginator({--%>
-        <%--totalPages: ${pages},--%>
-        <%--visiblePages: 5,--%>
-        <%--currentPage: ${page},--%>
 
-        <%--first: '<li class="first"><a href="/department/index?name=${name}&page=1">首页</a></li>',--%>
-        <%--prev: '<li class="prev"><a href="/department/index?name=${name}&page=${page-1==0?1:page-1}">上一页</a></li>',--%>
-        <%--next: '<li class="next"><a href="/department/index?name=${name}&page=${page==pages?page:page+1}">下一页</a></li>',--%>
-        <%--last: '<li class="last"><a href="/department/index?name=${name}&page={{totalPages}}">尾页</a></li>',--%>
-        <%--page: '<li class="page"><a href="/department/index?name=${name}&page={{page}}">{{page}}</a></li>',--%>
-        <%--onPageChange: function (num) {--%>
-<%--//            window.location.href = "empolyeeByPage?page=" +  num;--%>
-        <%--}--%>
-    <%--});--%>
-
-    <%--通过id异步删除部门--%>
+    //通过id异步删除部门
     function deleDepById(id, page, name) {
         var b = window.confirm("确定要删除" + name + "么?");
         if (b) {
@@ -185,32 +199,68 @@
         var dep_name = $("#dep_name").val();
         var dep_des = $("#dep_des").val();
 
-        if (dep_name == ''){
+        if (dep_name == '') {
             alert('请输入部门名称');
             return;
         }
 
-        if (dep_des == ''){
+        if (dep_des == '') {
             alert('请输入部门描述');
             return;
         }
 
+        $('#myModal').modal('hide');
+
         $.post(
             '/department/addDepReturnJson',
             {
-                'dep_name':dep_name,
-                'dep_des':dep_des
+                'dep_name': dep_name,
+                'dep_des': dep_des
             },
             function (result) {
                 var jsonResult = jQuery.parseJSON(result);
-                if (jsonResult.status == 'success'){
+                if (jsonResult.status == 'success') {
                     alert('添加成功');
                     window.location = "/department/deps";
-                }else {
+                } else {
                     alert('添加失败' + jsonResult.message);
                 }
             }
         )
     })
+
+    //编辑部门信息
+    function updateDep(dep_id, dep_name, dep_des) {
+        $('#myUpdateModal').modal('show');
+        $('#update_dep_name').val(dep_name);
+        $('#update_dep_des').val(dep_des);
+
+        $('#updateDep').click(function () {
+            if ($('#update_dep_name').val() == dep_name && $('#update_dep_des').val() == dep_des) {
+                alert('您没有修改信息');
+                $('#myUpdateModal').modal('hide');
+                return;
+            }
+
+            $.post(
+                '/department/updateDepReturnJson',
+                {
+                    'dep_id': dep_id,
+                    'dep_name': $('#update_dep_name').val(),
+                    'dep_des': $('#update_dep_des').val()
+                },
+                function (result) {
+                    var jsonResult = jQuery.parseJSON(result);
+                    if (jsonResult.status == 'success') {
+                        alert('修改成功');
+                        $('#myUpdateModal').modal('hide');
+                        window.location = '/department/deps';
+                    } else {
+                        alert(jsonResult.message);
+                    }
+                }
+            )
+        })
+    }
 
 </script>

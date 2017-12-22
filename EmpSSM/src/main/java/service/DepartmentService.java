@@ -63,17 +63,18 @@ public class DepartmentService {
 
     /**
      * 添加部门
+     *
      * @param name 部门名字
      * @param des  部门描述
      * @return 增加的部门主键序号
      */
-    public Integer addDepartmentByNameAndDes(String name,String des) throws BaseException {
+    public Integer addDepartmentByNameAndDes(String name, String des) throws BaseException {
 
-        if (name == null || name.trim().equals("")){
+        if (name == null || name.trim().equals("")) {
             throw new BaseException("部门名字不能为空");
         }
 
-        if (des == null || des.trim().equals("")){
+        if (des == null || des.trim().equals("")) {
             throw new BaseException("部门描述不能为空");
         }
 
@@ -84,18 +85,31 @@ public class DepartmentService {
 
     /**
      * 获取所有部门信息
+     *
      * @return 部门信息集合
      */
-    public List<Department> getAllDeps(){
+    public List<Department> getAllDeps() {
         return departmentMapper.getAllDeps();
     }
 
     /**
      * 通过部门名字搜索部门
+     *
      * @param name 部门名字
      * @return 部门列表
      */
     public List<Department> searchDeps(String name) {
         return departmentMapper.searchDepsByName(name);
+    }
+
+    /**
+     * 更新部门操作
+     *
+     * @param dep_id   部门id
+     * @param dep_name 部门名称
+     * @param dep_des  部门描述
+     */
+    public Integer updateDep(Integer dep_id, String dep_name, String dep_des) {
+        return departmentMapper.updateDep(dep_id, dep_name, dep_des);
     }
 }

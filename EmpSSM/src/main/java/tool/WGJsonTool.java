@@ -16,25 +16,27 @@ public class WGJsonTool {
 
     /**
      * 成功的json数据返回
+     *
      * @param dataObj 需要返回的数据
      * @return
      */
-    public static String successJson(Object dataObj){
-        map.put("status","success");
-        map.put("data",dataObj);
-        map.put("message","");
+    public static String successJson(Object dataObj) {
+        map.put("status", "success");
+        map.put("data", dataObj);
+        map.put("message", "");
         return JSON.toJSONString(map);
     }
 
     /**
      * 失败的数据返回
+     *
      * @param message 失败的原因
      * @return
      */
-    public static String failJson(String message){
-        map.put("status","fail");
-        map.put("data","");
-        map.put("message",message == null?message:"请求出现了错误");
+    public static String failJson(String message) {
+        map.put("status", "fail");
+        map.put("data", "");
+        map.put("message", message == null ? message : "请求出现了错误");
         return JSON.toJSONString(map);
     }
 }

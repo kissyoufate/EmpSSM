@@ -47,4 +47,11 @@
     <select id="searchDepsByName" resultMap="department">
         select *from tbl_department where dep_mark = 1 and dep_name like concat(concat("%",#{dep_name}),"%")
     </select>
+
+    <!--    public Integer updateDep(@Param(value = "dep_id") String dep_id,
+                             @Param(value = "dep_name") String dep_name,
+                             @Param(value = "dep_des") String dep_des);-->
+    <update id="updateDep" useGeneratedKeys="true">
+        update tbl_department set dep_name = #{dep_name},dep_des = #{dep_des} where id = #{dep_id}
+    </update>
 </mapper>

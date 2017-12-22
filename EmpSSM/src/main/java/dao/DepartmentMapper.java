@@ -61,4 +61,15 @@ public interface DepartmentMapper {
      * @return 部门列表集合
      */
     List<Department> searchDepsByName(@Param(value = "dep_name") String name);
+
+    /**
+     * 更新部门
+     * @param dep_id 部门id
+     * @param dep_name 部门名字
+     * @param dep_des 部门描述
+     * @return
+     */
+    public Integer updateDep(@Param(value = "dep_id") Integer dep_id,
+                             @Param(value = "dep_name") String dep_name,
+                             @Param(value = "dep_des") String dep_des);
 }

@@ -170,7 +170,7 @@ public class DepartmentConteoller {
      */
     @RequestMapping("/deps")
     public String getAll(@RequestParam(value = "pg", defaultValue = "1") String pg,
-                         @RequestParam(value = "search_name",defaultValue = "") String searchName,
+                         @RequestParam(value = "search_name", defaultValue = "") String searchName,
                          Model model) {
         //分页
         PageHelper.startPage(Integer.parseInt(pg), limit);
@@ -185,33 +185,36 @@ public class DepartmentConteoller {
 
     /**
      * 搜索部门
-     * @param name 部门名字
-     * @param pg 当前页数
+     *
+     * @param name  部门名字
+     * @param pg    当前页数
      * @param model 数据模型
      * @return 跳转的页面地址
      */
     @RequestMapping("/searchDeps")
     public String searchDepsByName(@RequestParam(value = "name") String name,
-                                   @RequestParam(value = "pg",defaultValue = "1") String pg,
-                                   Model model){
+                                   @RequestParam(value = "pg", defaultValue = "1") String pg,
+                                   Model model) {
         //分页
-        PageHelper.startPage(Integer.parseInt(pg),limit);
+        PageHelper.startPage(Integer.parseInt(pg), limit);
 
-        if (name == null || name.trim().equals("")){
+        if (name == null || name.trim().equals("")) {
             List<Department> lists = departmentService.getAllDeps();
             PageInfo<Department> pageInfo = new PageInfo<Department>(lists);
-            model.addAttribute("pageInfo",pageInfo);
-            model.addAttribute("error","请输入要搜索的部门名字");
-        }else {
+            model.addAttribute("pageInfo", pageInfo);
+            model.addAttribute("error", "请输入要搜索的部门名字");
+        } else {
             List<Department> lists = departmentService.searchDeps(name);
             PageInfo<Department> pageInfo = new PageInfo<Department>(lists);
-            model.addAttribute("pageInfo",pageInfo);
+            model.addAttribute("pageInfo", pageInfo);
+            model.addAttribute("searchName",name);
         }
         return "views/department/depManager";
     }
 
     /**
      * 添加部门
+     *
      * @param dep_name 部门名字
      * @param dep_des  部门描述
      * @return 数据json
@@ -219,26 +222,58 @@ public class DepartmentConteoller {
     @RequestMapping("/addDepReturnJson")
     @ResponseBody
     public String addDepReturnJson(@RequestParam(value = "dep_name") String dep_name,
-                                   @RequestParam(value = "dep_des") String dep_des){
+                                   @RequestParam(value = "dep_des") String dep_des) {
 
-        if (dep_name == null || dep_name.trim().equals("")){
+        if (dep_name == null || dep_name.trim().equals("")) {
             return WGJsonTool.failJson("部门名字不能为空");
         }
 
-        if (dep_des == null || dep_des.trim().equals("")){
+        if (dep_des == null || dep_des.trim().equals("")) {
             return WGJsonTool.failJson("部门描述不能为空");
         }
 
         Integer integer = null;
         try {
             integer = departmentService.addDepartmentByNameAndDes(dep_name, dep_des);
-            if (integer > 0){
+            if (integer > 0) {
                 return WGJsonTool.successJson("部门条件成功");
-            }else {
+            } else {
                 return WGJsonTool.failJson(null);
             }
         } catch (BaseException e) {
             return WGJsonTool.failJson(e.getMessage());
         }
+    }
+
+    /**
+     * 更新部门操作 返回json数据集合
+     *
+     * @param dep_id   部门id
+     * @param dep_name 部门名字
+     * @param dep_des  部门描述
+     * @return
+     */
+    @RequestMapping("/updateDepReturnJson")
+    @ResponseBody
+    public String updateDep(@RequestParam(value = "dep_id") String dep_id,
+                            @RequestParam(value = "dep_name") String dep_name,
+                            @RequestParam(value = "dep_des") String dep_des) {
+        if (dep_id == null || dep_id.trim().equals("")) {
+            return WGJsonTool.failJson("部门id不能为空");
+        }
+
+        if (dep_name == null || dep_name.trim().equals("")) {
+            return WGJsonTool.failJson("部门名字不能为空");
+        }
+
+        if (dep_des == null || dep_des.trim().equals("")) {
+            return WGJsonTool.failJson("部门描述不能为空");
+        }
+
+        Integer integer = departmentService.updateDep(Integer.parseInt(dep_id), dep_name, dep_des);
+        if (integer > 0) {
+            return WGJsonTool.successJson("修改成功");
+        } else
+            return WGJsonTool.failJson("修改失败");
     }
 }
