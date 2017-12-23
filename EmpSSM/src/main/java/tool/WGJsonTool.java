@@ -36,7 +36,10 @@ public class WGJsonTool {
     public static String failJson(String message) {
         map.put("status", "fail");
         map.put("data", "");
-        map.put("message", message == null ? message : "请求出现了错误");
+        if (message == null || message.trim().equals("")){
+            message = "请求出现了错误";
+        }
+        map.put("message", message);
         return JSON.toJSONString(map);
     }
 }

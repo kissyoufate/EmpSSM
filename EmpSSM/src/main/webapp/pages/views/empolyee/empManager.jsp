@@ -51,7 +51,8 @@
             <th>联系方式</th>
             <th>操作</th>
         </tr>
-        <c:forEach items="${lists}" var="list">
+        ${lists}
+        <c:forEach items="${pageInfo.list}" var="list">
             <tr>
                 <td>${list.id}</td>
                 <td>${list.emp_name}</td>
@@ -59,55 +60,61 @@
                 <td>${list.emp_age}</td>
                 <td>${list.emp_tel}</td>
                 <td>
-                    <a href="gotoEditEmp?id=${list.id}" class="btn btn-sm">编辑</a>
-                    <a href="javascript:void (0)" class="btn btn-sm" onclick="doDel(${list.id})">删除</a>
+                    <a href="javascript:void (0)" class="btn btn-sm">编辑</a>
+                    <a href="javascript:void (0)" class="btn btn-sm">删除</a>
                 </td>
             </tr>
         </c:forEach>
     </table>
 </div>
 <!-- 分页按钮 -->
-<ul class="pagination" id="pagination" style="width: 450px;display: block;position: relative;margin: 0 auto;"></ul>
+<div style="width: 400px; margin: 10px auto">
+    <nav aria-label="Page navigation">
+        <ul class="pagination">
+            <c:if test="${pageInfo.pageNum <= 1}">
+                <li class="disabled">
+                <a href="/empolyee/index?page=${pageInfo.pageNum-1}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                </li>
+            </c:if>
+            <c:if test="${pageInfo.pageNum > 1}">
+                <li class="disabled">
+                    <a href="/empolyee/index?page=${pageInfo.pageNum-1}" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+            </c:if>
+
+            <c:forEach items="${pageInfo.navigatepageNums}" var="p">
+                <c:if test="${p == pageInfo.pageNum}">
+                    <li class="disabled"><a href="/empolyee/index?page=${p}">${p}</a></li>
+                </c:if>
+                <c:if test="${p != pageInfo.pageNum}">
+                    <li><a href="/empolyee/index?page=${p}">${p}</a></li>
+                </c:if>
+            </c:forEach>
+
+            <c:if test="${pageInfo.pageNum >= pageInfo.pages}">
+                <li class="disabled">
+                    <a href="/empolyee/index?page=${pageInfo.pageNum+1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </c:if>
+            <c:if test="${pageInfo.pageNum < pageInfo.pages}">
+                <li>
+                    <a href="/empolyee/index?page=${pageInfo.pageNum+1}" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </c:if>
+        </ul>
+    </nav>
+</div>
 </body>
 </html>
 
 <script>
-    //分页
-    $('#pagination').jqPaginator({
-        totalPages: ${pages},
-        visiblePages: 5,
-        currentPage: ${currentPage},
-
-        first: '<li class="first"><a href="empolyeeByPage?page=1">首页</a></li>',
-        prev: '<li class="prev"><a href="empolyeeByPage?page=${currentPage-1==0?1:currentPage-1}">上一页</a></li>',
-        next: '<li class="next"><a href="empolyeeByPage?page=${currentPage==pages?currentPage:currentPage+1}">下一页</a></li>',
-        last: '<li class="last"><a href="empolyeeByPage?page={{totalPages}}">尾页</a></li>',
-        page: '<li class="page"><a href="empolyeeByPage?page={{page}}">{{page}}</a></li>',
-        onPageChange: function (num) {
-//            window.location.href = "empolyeeByPage?page=" +  num;
-        }
-    });
-
-    //删除某一个员工
-    function doDel(id) {
-        if (window.confirm("确定要删除么?")){
-            $.post(
-                "deleEmp",
-                {
-                    "id":id
-                },
-                function (result) {
-                    var data = jQuery.parseJSON(result);
-
-                    if (data.code == "success"){
-                        alert("删除成功");
-                        window.location.href = "empolyeeByPage?page=1";
-                    }else {
-                        alert(result.message);
-                    }
-                }
-            )
-        }
-    }
 
 </script>

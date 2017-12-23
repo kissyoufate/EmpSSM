@@ -63,13 +63,11 @@
     </table>
 </div>
 <!-- 分页按钮 -->
-<%--<ul class="pagination" id="pagination" style="width: 450px;display: block;position: relative;margin: 0 auto;"></ul>--%>
 <div style="width: 400px; margin: 10px auto">
     <nav aria-label="Page navigation">
         <ul class="pagination">
             <c:if test="${pageInfo.pageNum <= 1}">
-                <li class="disabled"
-                ">
+                <li class="disabled">
                 <a href="/department/deps?pg=${pageInfo.pageNum-1}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>

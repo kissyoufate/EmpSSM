@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dao.EmpolyeeMapper">
+
+    <resultMap id="empolyee" type="model.Empolyee">
+        <id column="id" property="id"></id>
+        <result column="emp_name" property="emp_name"></result>
+        <result column="emp_sex" property="emp_sex"></result>
+        <result column="emp_age" property="emp_age"></result>
+        <result column="emp_tel" property="emp_tel"></result>
+        <result column="dep_id" property="dep_id"></result>
+    </resultMap>
+
+
+    <!--public List<Empolyee> getAllEmps();-->
+    <select id="getAllEmps" resultMap="empolyee">
+        select *from tbl_empolyee
+    </select>
+</mapper>
