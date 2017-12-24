@@ -30,7 +30,7 @@
 <!--员工的头,包含搜索,添加等功能-->
 <div class="emp_top">
     <div class="emp_serch">
-        <form action="empolyeeQuery" class="form-inline" method="post">
+        <form action="/empolyee/search" class="form-inline" method="post">
             <input type="text" class="form-control" placeholder="请输入员工名称" name="emp_name" value="${emp_name}">
             <input type="submit" value="查询" class="btn btn-success" style="width: 100px">
             <a href="gotoAddEmp" style="position: relative;width: 100px" class="btn btn-info">添加</a>
@@ -61,7 +61,7 @@
                 <td>${list.emp_tel}</td>
                 <td>
                     <a href="javascript:void (0)" class="btn btn-sm">编辑</a>
-                    <a href="javascript:void (0)" class="btn btn-sm">删除</a>
+                    <a href="javascript:void (0)" class="btn btn-sm" onclick="deleteEmpById(${list.id})">删除</a>
                 </td>
             </tr>
         </c:forEach>
@@ -73,14 +73,14 @@
         <ul class="pagination">
             <c:if test="${pageInfo.pageNum <= 1}">
                 <li class="disabled">
-                <a href="/empolyee/index?page=${pageInfo.pageNum-1}" aria-label="Previous">
+                <a href="${requestUri}?page=${pageInfo.pageNum-1}&emp_name=${emp_name}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
                 </li>
             </c:if>
             <c:if test="${pageInfo.pageNum > 1}">
-                <li class="disabled">
-                    <a href="/empolyee/index?page=${pageInfo.pageNum-1}" aria-label="Previous">
+                <li>
+                    <a href="${requestUri}?page=${pageInfo.pageNum-1}&emp_name=${emp_name}" aria-label="Previous">
                         <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
@@ -88,23 +88,23 @@
 
             <c:forEach items="${pageInfo.navigatepageNums}" var="p">
                 <c:if test="${p == pageInfo.pageNum}">
-                    <li class="disabled"><a href="/empolyee/index?page=${p}">${p}</a></li>
+                    <li class="disabled"><a href="${requestUri}?page=${p}&emp_name=${emp_name}">${p}</a></li>
                 </c:if>
                 <c:if test="${p != pageInfo.pageNum}">
-                    <li><a href="/empolyee/index?page=${p}">${p}</a></li>
+                    <li><a href="${requestUri}?page=${p}&emp_name=${emp_name}">${p}</a></li>
                 </c:if>
             </c:forEach>
 
             <c:if test="${pageInfo.pageNum >= pageInfo.pages}">
                 <li class="disabled">
-                    <a href="/empolyee/index?page=${pageInfo.pageNum+1}" aria-label="Next">
+                    <a href="${requestUri}?page=${pageInfo.pageNum+1}&emp_name=${emp_name}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
             </c:if>
             <c:if test="${pageInfo.pageNum < pageInfo.pages}">
                 <li>
-                    <a href="/empolyee/index?page=${pageInfo.pageNum+1}" aria-label="Next">
+                    <a href="${requestUri}?page=${pageInfo.pageNum+1}&emp_name=${emp_name}" aria-label="Next">
                         <span aria-hidden="true">&raquo;</span>
                     </a>
                 </li>
@@ -116,5 +116,12 @@
 </html>
 
 <script>
+
+    //删除员工
+    function deleteEmpById(id){
+        if (window.confirm("确认要删除员工么?")){
+            window.location = "/empolyee/delete?id=" + id;
+        }
+    }
 
 </script>

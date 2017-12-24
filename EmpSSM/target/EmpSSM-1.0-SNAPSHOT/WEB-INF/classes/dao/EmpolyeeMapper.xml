@@ -18,4 +18,17 @@
     <select id="getAllEmps" resultMap="empolyee">
         select *from tbl_empolyee
     </select>
+
+    <!--List<Empolyee> searchEmpsByName(@Param(value = "emp_name") String emp_name);-->
+    <select id="searchEmpsByName" resultMap="empolyee">
+        select *from tbl_empolyee
+        <if test="emp_name != null and emp_name != ''">
+            where emp_name like concat(concat("%",#{emp_name}),"%")
+        </if>
+    </select>
+
+    <!--public void deleteEmpById(@Param(value = "id") int id);-->
+    <delete id="deleteEmpById">
+        delete from tbl_empolyee where id = #{id}
+    </delete>
 </mapper>

@@ -25,4 +25,21 @@ public class EmpolyeeService {
     public List<Empolyee> getAllEmps() {
         return empolyeeMapper.getAllEmps();
     }
+
+    /**
+     * 通过姓名模糊搜索员工
+     * @param emp_name 员工姓名关键字
+     * @return
+     */
+    public List<Empolyee> searchEmpsByName(String emp_name) {
+        return empolyeeMapper.searchEmpsByName(emp_name);
+    }
+
+    /**
+     * 删除员工
+     * @param id 员工id
+     */
+    public void deleteEmpById(int id) {
+        empolyeeMapper.deleteEmpById(id);
+    }
 }
