@@ -32,4 +32,11 @@ public interface EmpolyeeMapper {
      * @param id 员工id
      */
     public void deleteEmpById(@Param(value = "id") int id);
+
+    /**
+     * 添加员工
+     * @param empolyee 员工的模型
+     * @return
+     */
+    Integer addEmp(@Param(value = "empolyee") Empolyee empolyee);
 }

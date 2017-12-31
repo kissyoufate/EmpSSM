@@ -42,4 +42,23 @@ public class EmpolyeeService {
     public void deleteEmpById(int id) {
         empolyeeMapper.deleteEmpById(id);
     }
+
+    /**
+     * 添加员工
+     * @param emp_name 员工姓名
+     * @param emp_sex  员工性别
+     * @param emp_age  员工年龄
+     * @param emp_tel  员工电话
+     * @param dep_id   员工所属部门id
+     * @return
+     */
+    public Integer addEmp(String emp_name, Integer emp_age, String emp_sex, String emp_tel, Integer dep_id) {
+        Empolyee empolyee = new Empolyee();
+        empolyee.setEmp_name(emp_name);
+        empolyee.setEmp_age(emp_age);
+        empolyee.setEmp_sex(emp_sex);
+        empolyee.setEmp_tel(emp_tel);
+        empolyee.setDep_id(dep_id);
+        return empolyeeMapper.addEmp(empolyee);
+    }
 }

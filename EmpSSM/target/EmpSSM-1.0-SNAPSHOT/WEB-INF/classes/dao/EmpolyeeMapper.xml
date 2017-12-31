@@ -31,4 +31,9 @@
     <delete id="deleteEmpById">
         delete from tbl_empolyee where id = #{id}
     </delete>
+
+    <!--Integer addEmp(@Param(value = "empolyee") Empolyee empolyee);-->
+    <insert id="addEmp" useGeneratedKeys="true">
+        insert into tbl_empolyee(emp_name, emp_sex, emp_age, emp_tel, dep_id) value(#{empolyee.emp_name},#{empolyee.emp_age},#{empolyee.emp_sex},#{empolyee.emp_tel},#{empolyee.dep_id})
+    </insert>
 </mapper>

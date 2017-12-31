@@ -275,4 +275,18 @@ public class DepartmentConteoller {
         } else
             return WGJsonTool.failJson("修改失败");
     }
+
+    /**
+     * 通过json数据获取所有的部门列表数据
+     * @return
+     */
+    @RequestMapping("/getAllDepsByJson")
+    @ResponseBody
+    public String getAllDepsByJson(){
+        List<Department> allDeps = departmentService.getAllDeps();
+        if (allDeps.size() > 0){
+            return WGJsonTool.successJson(allDeps);
+        }
+        return WGJsonTool.failJson("获取部门数据失败了");
+    }
 }
